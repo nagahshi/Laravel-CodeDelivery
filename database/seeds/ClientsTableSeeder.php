@@ -1,8 +1,8 @@
 <?php
-use CodeDelivery\Models\Client;
+
 use Illuminate\Database\Seeder;
 
-class ClientTableSeeder extends Seeder
+class ClientsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class ClientTableSeeder extends Seeder
      */
     public function run()
     {
-        
+        //
     }
 }
