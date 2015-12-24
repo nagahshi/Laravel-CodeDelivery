@@ -1,34 +1,38 @@
 @extends('app')
 @section('content')
 <div class="container">
-    <h3>Categorias</h3>
+    <h3>Cupons</h3>
     <br/>
-    <a href="{{route('admin.clients.create')}}" class="btn btn-default">Novo Cliente</a>
+    <a href="{{route('admin.cupoms.create')}}" class="btn btn-default">Novo Cupom</a>
     <br/><br/>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nome</th>
+                <th>Código</th>
+                <th>Valor</th>
                 <th>Ação</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($clients as $client)
+            @foreach($cupoms as $cupom)
             <tr>
                 <td>
-                    {{$client->id}}
+                    {{$cupom->id}}
                 </td>
                 <td>
-                    {{$client->user->name}}
+                    {{$cupom->code}}
+                </td>                
+                <td>
+                    {{$cupom->value}}
                 </td>
                 <td>
-                    <a  href="{{route('admin.clients.edit',['id'=>$client->id])}}" class="btn btn-default btn-sm">Editar</a>                    
+                    --
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
-    {!! $clients->render() !!}
+    {!! $cupoms->render() !!}
 </div>
 @endsection

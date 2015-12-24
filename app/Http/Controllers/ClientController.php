@@ -41,7 +41,7 @@ class ClientController extends Controller {
 
     public function update(AdminClientRequest $request, $id) {
         $data = $request->all();
-        $this->clientService->update($data,$id);
+        $this->clientService->update($data, $id);
 
         return redirect()->route('admin.clients.index');
     }

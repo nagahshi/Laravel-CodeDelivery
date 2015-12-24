@@ -1,13 +1,16 @@
 @extends('app')
 @section('content')
 <div class="container">
-    <h3>PedidosCategorias</h3>
+    <h3>Meus Pedidos</h3>
+    @include('errors._check')
+    <a href="{{route('customer.order.create')}}" class="btn btn-default">Novo Pedido</a>
     <br/><br/>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Ação</th>
+                <th>Total</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -17,12 +20,15 @@
                     {{$order->id}}
                 </td>
                 <td>
-                    <a  href="" class="btn btn-default btn-sm">Editar</a>
+                    {{$order->total}}
+                </td>
+                <td>
+                    {{$order->status}}
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
-    {!! $orders->render() !!}
+    {!!$orders->render()!!}
 </div>
 @endsection

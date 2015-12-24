@@ -13,24 +13,25 @@ class RepositoryServiceProvider extends ServiceProvider {
      */
     public function register() {
         $this->app->bind(
-                'CodeDelivery\Repositories\CategoryRepository',
-                'CodeDelivery\Repositories\CategoryRepositoryEloquent'
+                'CodeDelivery\Repositories\CategoryRepository', 'CodeDelivery\Repositories\CategoryRepositoryEloquent'
         );
         $this->app->bind(
-                'CodeDelivery\Repositories\ProductRepository',
-                'CodeDelivery\Repositories\ProductRepositoryEloquent'
+                'CodeDelivery\Repositories\ProductRepository', 'CodeDelivery\Repositories\ProductRepositoryEloquent'
         );
         $this->app->bind(
-                'CodeDelivery\Repositories\ClientRepository',
-                'CodeDelivery\Repositories\ClientRepositoryEloquent'
+                'CodeDelivery\Repositories\ClientRepository', 'CodeDelivery\Repositories\ClientRepositoryEloquent'
         );
         $this->app->bind(
-                'CodeDelivery\Repositories\UserRepository',
-                'CodeDelivery\Repositories\UserRepositoryEloquent'
+                'CodeDelivery\Repositories\UserRepository', 'CodeDelivery\Repositories\UserRepositoryEloquent'
         );
         $this->app->bind(
-                'CodeDelivery\Repositories\OrderRepository',
-                'CodeDelivery\Repositories\OrderRepositoryEloquent'
+                'CodeDelivery\Repositories\OrderRepository', 'CodeDelivery\Repositories\OrderRepositoryEloquent'
+        );
+        $this->app->bind(
+                'CodeDelivery\Repositories\OrderItemRepository', 'CodeDelivery\Repositories\OrderItemRepositoryEloquent'
+        );
+        $this->app->bind(
+                'CodeDelivery\Repositories\CupomRepository', 'CodeDelivery\Repositories\CupomRepositoryEloquent'
         );
     }
 
