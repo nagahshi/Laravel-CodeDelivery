@@ -17,7 +17,6 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
-
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.checkrole:admin', 'as' => 'admin.'], function() {
     Route::get('clients', ['as' => 'clients.index', 'uses' => 'ClientController@index']);
     Route::get('clients/create', ['as' => 'clients.create', 'uses' => 'ClientController@create']);
@@ -47,8 +46,34 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.checkrole:admin', 'as' 
     Route::post('cupoms/store', ['as' => 'cupoms.store', 'uses' => 'CupomsController@store']);
 });
 
-Route::group(['prefix' => 'customer','middleware' => 'auth.checkrole:client', 'as' => 'customer.'], function() {
+Route::group(['prefix' => 'customer', 'middleware' => 'auth.checkrole:client', 'as' => 'customer.'], function() {
     Route::get('order', ['as' => 'order.index', 'uses' => 'CheckoutController@index']);
     Route::get('order/create', ['as' => 'order.create', 'uses' => 'CheckoutController@create']);
     Route::post('order/store', ['as' => 'order.store', 'uses' => 'CheckoutController@store']);
+});
+Route::post('oauth/access_token', function() {
+    return Response::json(Authorizer::issueAccessToken());
+});
+
+Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function() {
+    Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function() {
+        Route::get('pedidos', function() {
+            return [
+                'id' => 1,
+                'client_id' => 12,
+                'type' => 'client',
+                'total' => 10.25
+            ];
+        });
+    });
+    Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function() {
+        Route::get('pedidos', function() {
+            return [
+                'id' => 1,
+                'client_id' => 12,
+                'type' => 'deliveryman',
+                'total' => 10.25
+            ];
+        });
+    });
 });
