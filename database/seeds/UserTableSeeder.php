@@ -32,7 +32,8 @@ class UserTableSeeder extends Seeder {
         ])->client()->save(factory(Client::class)->make());
         
         factory(User::class,3)->create([
-            'role' => 'deliveryman'
+            'role' => 'deliveryman',
+            'password' => bcrypt(123456)
         ]);
     }
 

@@ -12,33 +12,40 @@ use CodeDelivery\Repositories\OrderRepository;
 use CodeDelivery\Repositories\ProductRepository;
 use CodeDelivery\Repositories\CupomRepository;
 use Illuminate\Support\Facades\DB;
+
 /**
  * Description of ClientService
  *
  * @author Willian
  */
-class OrderService {
+class OrderService
+{
 
     private $clientRepository;
     private $userRepository;
 
-    public function __construct(OrderRepository $orderRepository, ProductRepository $productRepository, CupomRepository $cupomRepository) {
+    public function __construct(OrderRepository $orderRepository, ProductRepository $productRepository, CupomRepository $cupomRepository)
+    {
         $this->orderRepository = $orderRepository;
         $this->productRepository = $productRepository;
         $this->cupomRepository = $cupomRepository;
     }
 
-    public function update(array $data, $id) {
+    public function update(array $data, $id)
+    {
         $this->clientRepository->update($data, $id);
         $userId = $this->clientRepository->find($id, ['user_id'])->user_id;
         $this->userRepository->update($data['user'], $userId);
     }
 
-    public function create(array $data) {
+    public function create(array $data)
+    {
         DB::beginTransaction();
-        try {
+        try
+        {
             $data['status'] = 0;
-            if (isset($data['cupom_code'])) {
+            if (isset($data['cupom_code']))
+            {
                 $cupom = $this->cupomRepository->findByField('code', $data['cupom_code'])->first();
                 $data['cupom_id'] = $cupom->id;
                 $cupom->used = 1;
@@ -49,22 +56,38 @@ class OrderService {
             unset($data['items']);
             $order = $this->orderRepository->create($data);
             $total = 0;
-            foreach ($items as $item) {
+            foreach ($items as $item)
+            {
                 $item['price'] = $this->productRepository->find($item['product_id'])->price;
                 $order->items()->create($item);
                 $total += $item['price'] * $item['qtd'];
             }
 
             $order->total = $total;
-            if (isset($cupom)) {
+            if (isset($cupom))
+            {
                 $order->total = $total - $cupom->value;
             }
             $order->save();
             DB::commit();
-        } catch (Exception $e) {
+            return $order;
+        } catch (Exception $e)
+        {
             \DB::rollback();
             throw $e;
         }
+    }
+
+    public function updateStatus($id, $idDeliveryman, $status)
+    {
+        $order = $this->orderRepository->getByIdAndDeliveryman($id, $idDeliveryman);
+        if ($order instanceof \CodeDelivery\Models\Order)
+        {
+            $order->status = $status;
+            $order->save();
+            return $order;
+        }
+        return false;
     }
 
 }

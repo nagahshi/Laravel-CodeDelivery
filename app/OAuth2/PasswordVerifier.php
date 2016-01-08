@@ -1,7 +1,9 @@
 <?php
 
 namespace CodeDelivery\OAuth2;
+
 use Illuminate\Support\Facades\Auth;
+
 /**
  * Description of PasswordVerifier
  *
@@ -20,6 +22,9 @@ class PasswordVerifier
         if (Auth::once($credentials))
         {
             return Auth::user()->id;
+        } else
+        {
+            abort(403, 'User not found');
         }
 
         return false;

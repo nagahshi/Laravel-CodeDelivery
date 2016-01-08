@@ -3,7 +3,6 @@
 namespace CodeDelivery\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use CodeDelivery\Repositories\UserRepository;
 
@@ -28,7 +27,7 @@ class OAuthCheckRole
     {
 
         $id = Authorizer::getResourceOwnerId();
-        $user = $this->userRepository->find($id);
+        $user = \CodeDelivery\Models\User::where('id','=',$id)->first(); //$this->userRepository->find($id);
         if ($user->role != $role)
         {
             abort(403, 'Access Forbiden');
