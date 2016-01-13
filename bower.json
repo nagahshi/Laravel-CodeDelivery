@@ -1,0 +1,33 @@
+{
+  "name": "codedelivery",
+  "description": "front end de gerenciador de projetos",
+  "main": "",
+  "authors": [
+    "Willian C. Klein <willian.empari@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nagahshi/Laravel-CodeDelivery",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "resources/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.1",
+    "angular-route": "1.4.1",
+    "angular-resource": "1.4.1",
+    "angular-animate": "1.4.1",
+    "angular-messages": "1.4.1",
+    "angular-material": "master",
+    "angular-oauth2": "~3.0.1",
+    "angularUtils-pagination": "angular-utils-pagination#~0.9.4",
+    "angular-http-auth": "~1.2.3",
+    "angular-bootstrap": "~1.0.3"
+  }
+}

@@ -4,4 +4,11 @@ Homestead.yaml
 Homestead.json
 .env
 /nbproject
+/resources/views/boot-app.blade.php
 /resources/assets/js
+/resources/assets/css
+/resources/assets/views
+/resources/bower_components
+/app/Http/Controllers/Api/Admin
+/app/Http/Controllers/Api/UserController.php
+/public/build

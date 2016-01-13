@@ -3,15 +3,18 @@
 use CodeDelivery\Models\User;
 use CodeDelivery\Models\Client;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class UserTableSeeder extends Seeder {
+class UserTableSeeder extends Seeder
+{
 
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         factory(User::class, 10)->create()->each(function($u) {
             $u->client()->save(factory(Client::class)->make());
         });
@@ -22,18 +25,24 @@ class UserTableSeeder extends Seeder {
             'password' => bcrypt(123456),
             'remember_token' => str_random(10),
         ])->client()->save(factory(Client::class)->make());
-        
+
         factory(User::class)->create([
             'name' => 'Admin',
             'email' => 'admin@user.com',
             'password' => bcrypt(123456),
-            'role'=>'admin',
+            'role' => 'admin',
             'remember_token' => str_random(10),
         ])->client()->save(factory(Client::class)->make());
-        
-        factory(User::class,3)->create([
+
+        factory(User::class, 3)->create([
             'role' => 'deliveryman',
             'password' => bcrypt(123456)
+        ]);
+
+        DB::table('oauth_clients')->insert([
+            'id' => 'appid01',
+            'secret' => 'secret',
+            'name' => 'Minha App Mobile'
         ]);
     }
 

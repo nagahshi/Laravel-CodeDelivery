@@ -2,8 +2,6 @@
 
 namespace CodeDelivery\Http\Controllers;
 
-use Illuminate\Http\Request;
-use CodeDelivery\Http\Requests;
 use CodeDelivery\Http\Controllers\Controller;
 use CodeDelivery\Repositories\ProductRepository;
 use CodeDelivery\Http\Requests\AdminProductRequest;

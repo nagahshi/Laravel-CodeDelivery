@@ -14,8 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/home', function () {
-    return view('welcome');
+Route::get('/', function () {
+    return view('home');
+});
+Route::get('/angular', function () {
+    return view('boot-app');
 });
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.checkrole:admin', 'as' => 'admin.'], function() {
     Route::get('clients', ['as' => 'clients.index', 'uses' => 'ClientController@index']);
@@ -52,24 +55,31 @@ Route::group(['prefix' => 'customer', 'middleware' => 'auth.checkrole:client', '
     Route::post('order/store', ['as' => 'order.store', 'uses' => 'CheckoutController@store']);
 });
 
-Route::group(['middleware' => 'cors'], function(){	
-	Route::post('oauth/access_token', function() {
-		return Response::json(Authorizer::issueAccessToken());
-	});
-	Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function() {
-		//client
-		Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function() {
-			Route::get('products', ['as' => 'api.products.index', 'uses' => 'Api\Client\ClientProductController@index']);			
-			Route::post('order', ['as' => 'api.order.store', 'uses' => 'Api\Client\ClientCheckoutController@store']);
-		});
-		//deliveryman
-		Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function() {
-			Route::resource('order', 'Api\Deliveryman\DeliverymanCheckoutController', ['except' => ['create', 'edit', 'destroy', 'store']]);
-			Route:patch('order/{id}/update-status',['uses'=>'Api\Deliveryman\DeliverymanCheckoutController@updateStatus','as'=>'orders.update_status']);
-		});
-		//cupom
-		Route::get('cupom/{code}', ['as' => 'api.cupom.show', 'uses' => 'Api\CupomController@show']);			
-	});    
+Route::group(['middleware' => 'cors'], function() {
+    Route::post('oauth/access_token', function() {
+        return Response::json(Authorizer::issueAccessToken());
+    });
+    Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function() {
+        //admin
+        Route::group(['prefix' => 'admin', 'middleware' => 'oauth.checkrole:admin', 'as' => 'admin.'], function() {
+            Route::resource('products','Api\Admin\AdminProductController',['except' => ['create', 'edit']]);
+            Route::resource('categories','Api\Admin\AdminCategoryController',['except' => ['create', 'edit', 'destroy', 'store']]);            
+        });
+        //client
+        Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function() {
+            Route::get('products', ['as' => 'api.products.index', 'uses' => 'Api\Client\ClientProductController@index']);
+            Route::post('order', ['as' => 'api.order.store', 'uses' => 'Api\Client\ClientCheckoutController@store']);
+        });
+        //deliveryman
+        Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function() {
+            Route::resource('order', 'Api\Deliveryman\DeliverymanCheckoutController', ['except' => ['create', 'edit', 'destroy', 'store']]);
+            Route:patch('order/{id}/update-status', ['uses' => 'Api\Deliveryman\DeliverymanCheckoutController@updateStatus', 'as' => 'orders.update_status']);
+        });
+        //cupom
+        Route::get('cupom/{code}', ['as' => 'api.cupom.show', 'uses' => 'Api\CupomController@show']);
+		//user
+		Route::get('user/authenticated', ['as' => 'api.user.authenticated', 'uses' => 'Api\UserController@authenticated']);
+    });
 });
 
 
